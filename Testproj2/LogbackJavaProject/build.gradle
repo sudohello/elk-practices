@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin:'application'
+
+mainClassName = 'ayon.Program'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+  
+  //this is ony collection of interfaces
+  // we must add implementation to get to working
+  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22'
+  
+  // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+  compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.9'
+
+
+    //tcp logstash encoder
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.8'
+
+}
+

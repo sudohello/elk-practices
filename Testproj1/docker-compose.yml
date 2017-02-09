@@ -1,0 +1,39 @@
+version: '2'
+services:
+  elasticsearch:
+    build: elasticsearch/
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./elasticsearch/config:/etc/elasticsearch/conf.d
+    #environment:
+    #  ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    networks:
+      - elk_LAN
+  logstash:
+    build: logstash/
+    command: -f /etc/logstash/conf.d/
+    volumes:
+      - ./logstash/config:/etc/logstash/conf.d #for configurations
+      - ./logstash/logfiles:/etc/logfiles #this is mentioned in the logstash.conf file, for file logging, anything you write in this file will get to kibana
+    ports:
+      - "5301:5301"
+    networks:
+      - elk_LAN
+    depends_on:
+      - elasticsearch
+  kibana:
+    build: kibana/
+    volumes:
+      - ./kibana/config/:/etc/kibana/
+    ports:
+      - "5601:5601"
+    networks:
+      - elk_LAN
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk_LAN:
+    driver: bridge
